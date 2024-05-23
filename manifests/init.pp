@@ -96,7 +96,7 @@ class prometheus_node_exporter (
   }
   $basename = "node_exporter-${version}.${downcase($facts['kernel'])}-${architecture}"
   $configuration = "${web_configuration_folder}/${web_configuration_file}"
-  $basic_auth_password_hashed = password_hash($basic_auth_password.unwrap())
+  $basic_auth_password_hashed = prometheus_node_exporter::password_hash($basic_auth_password.unwrap())
 
   # Define SE Linux contexts (if managed)
   if $manage_selinux_requirements {
