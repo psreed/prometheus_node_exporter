@@ -190,10 +190,11 @@ class prometheus_node_exporter (
   ##
   if $manage_service_user {
     group { $service_group: ensure => present, }
+    $groups = $tls_use_puppet_certificates ? { true => [$service_group,'root'], false => [$service_group] }
     user { $service_username:
       ensure  => present,
       shell   => '/bin/false',
-      groups  => [$service_group,'root'],
+      groups  => $groups,
       require => Group[$service_group],
       before  => [File[$web_configuration_folder],File[$configuration]],
     }
