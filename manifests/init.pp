@@ -162,7 +162,13 @@ class prometheus_node_exporter (
     # systemd service definition file
     file { $systemd_service_file:
       ensure  => file,
-      content => epp('prometheus_node_exporter/node_exporter.service.epp'),
+      content => epp('prometheus_node_exporter/node_exporter.service.epp', {
+          binary_symlink     => $binary_symlink,
+          configuration      => $configuration,
+          service_username   => $service_username,
+          service_group      => $service_group,
+          web_listen_address => $web_listen_address,
+      }),
     }
     # set requirement for user resource to exist first (if managed)
     if $manage_service_user {
@@ -207,7 +213,14 @@ class prometheus_node_exporter (
       owner   => $service_username,
       group   => $service_group,
       mode    => '0640',
-      content => epp('prometheus_node_exporter/configuration.yml.epp'),
+      content => epp('prometheus_node_exporter/configuration.yml.epp', {
+          basic_auth_enabled         => $basic_auth_enabled,
+          basic_auth_password_hashed => $basic_auth_password_hashed,
+          basic_auth_username        => $basic_auth_username,
+          tls_enabled                => $tls_enabled,
+          tls_certificate_file       => $tls_certificate_file,
+          tls_private_key_file       => $tls_private_key_file,
+      }),
       require => File[$web_configuration_folder],
   })
 }
