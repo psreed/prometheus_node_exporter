@@ -6,7 +6,7 @@ After=network.target
 User=<%= $service_username %>
 Group=<%= $service_group %>
 Type=simple
-ExecStart=<%= $binary_symlink %> --web.config.file=<%= $configuration %><% if $web_listen_address != undef { %> --web.listen-address=<$= web_listen_address %><% } %>
+ExecStart=<%= $binary_symlink %> --web.config.file=<%= $configuration %><% if $web_listen_address != undef { %> --web.listen-address=<%= web_listen_address %><% } %>
 
 [Install]
 WantedBy=multi-user.target
