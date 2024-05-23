@@ -211,8 +211,8 @@ class prometheus_node_exporter (
   })
   # Manage the web configuration file
   if $tls_use_puppet_certificates {
-    $tls_cert    = "${facts['puppet_sslpaths']['certdir']}/${facts['clientcert']}.pem"
-    $tls_privkey = "${facts['puppet_sslpaths']['privatekeydir']}/${facts['clientcert']}.pem"
+    $tls_cert    = "${facts['puppet_sslpaths']['certdir']['path']}/${facts['clientcert']}.pem"
+    $tls_privkey = "${facts['puppet_sslpaths']['privatekeydir']['path']}/${facts['clientcert']}.pem"
   } else {
     $tls_cert    = $tls_certificate_file
     $tls_privkey = $tls_private_key_file
