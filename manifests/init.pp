@@ -135,7 +135,7 @@ class prometheus_node_exporter (
     }
 
     # Set binary file owner, permissions and selinux context (if applicable)
-    ensure_resources('file',"${target_folder_location}/${basename}/node_exporter", $selinux_binary_file_params + {
+    ensure_resource('file',"${target_folder_location}/${basename}/node_exporter", $selinux_binary_file_params + {
         ensure => file,
         owner => $service_username,
         group => $service_group,
@@ -145,7 +145,7 @@ class prometheus_node_exporter (
     })
 
     # Create symlink in /usr/local/bin
-    ensure_resources('file',$binary_symlink, $selinux_binary_file_params + {
+    ensure_resource('file',$binary_symlink, $selinux_binary_file_params + {
         ensure => link,
         owner => $service_username,
         group => $service_group,
@@ -171,7 +171,7 @@ class prometheus_node_exporter (
       }
     }
     # Manage the service
-    ensure_resources('service', $systemd_service_name, $service_user_params + {
+    ensure_resource('service', $systemd_service_name, $service_user_params + {
         ensure  => $service_ensure,
         enable  => $service_enabled,
         require => File[$systemd_service_file],
@@ -196,14 +196,14 @@ class prometheus_node_exporter (
   ## Manage web configuration
   ##
   # Manage the web configuration folder
-  ensure_resources('file',$web_configuration_folder, $selinux_config_file_params + {
+  ensure_resource('file',$web_configuration_folder, $selinux_config_file_params + {
       ensure => directory,
       owner  => $service_username,
       group  => $service_group,
       mode    => '0750',
   })
   # Manage the web configuration file
-  ensure_resources('file',$configuration, $selinux_config_file_params + {
+  ensure_resource('file',$configuration, $selinux_config_file_params + {
       owner   => $service_username,
       group   => $service_group,
       mode    => '0640',
