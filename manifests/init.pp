@@ -6,7 +6,7 @@
 # @param basic_auth_enabled
 #   Determines if basic web authentication is used
 # @param basic_auth_hash_salt
-#   Sets the hash salt for basic web based authentication. Up to 16 characters, no symbols
+#   Sets the hash salt for basic web based authentication. Exactly 22 characters, no symbols
 # @param basic_auth_hash_strength
 #   Strength of the hash, number represented as string between 4 and 31 inclusive
 # @param basic_auth_password
@@ -60,7 +60,7 @@
 #
 class prometheus_node_exporter (
   Boolean           $basic_auth_enabled          = true,
-  Sensitive[String] $basic_auth_hash_salt        = Sensitive('0123456789AbCdEf'),
+  Sensitive[String] $basic_auth_hash_salt        = Sensitive('0123456789AbCdEfGhIjKl'),
   String            $basic_auth_hash_strength    = '10',
   Sensitive[String] $basic_auth_password         = Sensitive('<password>'),
   String            $basic_auth_username         = 'prometheus',
