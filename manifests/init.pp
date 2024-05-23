@@ -102,7 +102,7 @@ class prometheus_node_exporter (
   }
   $basename = "node_exporter-${version}.${downcase($facts['kernel'])}-${architecture}"
   $configuration = "${web_configuration_folder}/${web_configuration_file}"
-  $basic_auth_password_hashed = Sensitive(pw_hash($basic_auth_password, 'bcrypt-a', "${basic_auth_hash_strength}${basic_auth_hash_salt.unwrap()}")) #lint:ignore:140chars
+  $basic_auth_password_hashed = Sensitive(pw_hash($basic_auth_password, 'bcrypt-a', "${basic_auth_hash_strength}$${basic_auth_hash_salt.unwrap()}")) #lint:ignore:140chars
 
   # Define SE Linux contexts (if managed)
   if $manage_selinux_requirements {
