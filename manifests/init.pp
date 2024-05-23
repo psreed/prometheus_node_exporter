@@ -84,7 +84,7 @@ class prometheus_node_exporter (
   ## Classification check for valid OS, setup variables & SE Linux contexts
   ##
   # OS kernel check
-  if downcase($facts['os']['name']) != 'linux' and downcase($facts['os']['name']) != 'darwin' {
+  if downcase($facts['kernel']) != 'linux' and downcase($facts['kernel']) != 'darwin' {
     fail('The Prometheus Node Exporter only supports Darwin and Linux kernels. It cannot currently be installed on this system.')
   }
 
