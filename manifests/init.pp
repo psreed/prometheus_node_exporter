@@ -60,7 +60,7 @@
 #
 class prometheus_node_exporter (
   Boolean           $basic_auth_enabled          = true,
-  Sensitive[String] $basic_auth_hash_salt        = Sensitive('<hash_salt>'),
+  Sensitive[String] $basic_auth_hash_salt        = Sensitive('0123456789AbCdEf'),
   String            $basic_auth_hash_strength    = '10',
   Sensitive[String] $basic_auth_password         = Sensitive('<password>'),
   String            $basic_auth_username         = 'prometheus',
