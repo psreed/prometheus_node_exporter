@@ -178,9 +178,10 @@ class prometheus_node_exporter (
     }
     # Manage the service
     ensure_resource('service', $systemd_service_name, $service_user_params + {
-        ensure  => $service_ensure,
-        enable  => $service_enabled,
-        require => File[$systemd_service_file],
+        ensure    => $service_ensure,
+        enable    => $service_enabled,
+        require   => File[$systemd_service_file],
+        subscribe => [File[$configuration], File[$systemd_service_file]],
     })
   }
 
