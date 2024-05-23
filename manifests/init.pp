@@ -56,7 +56,7 @@
 #
 class prometheus_node_exporter (
   Boolean           $basic_auth_enabled          = true,
-  Sensitive[String] $basic_auth_password         = '<password>',
+  Sensitive[String] $basic_auth_password         = Sensitive('<password>'),
   String            $basic_auth_username         = 'prometheus',
   String            $binary_symlink              = '/usr/local/bin/node_exporter',
   Boolean           $manage_installation         = true,
@@ -64,10 +64,10 @@ class prometheus_node_exporter (
   Boolean           $manage_service_user         = true,
   Boolean           $manage_systemd_service      = true,
   Boolean           $service_enabled             = true,
-  Boolean           $service_ensure              = running,
+  String            $service_ensure              = running,
   String            $service_group               = 'node_exporter',
   String            $service_username            = 'node_exporter',
-  Boolean           $source_archive_base         = 'https://github.com/prometheus/node_exporter/releases/download',
+  String            $source_archive_base         = 'https://github.com/prometheus/node_exporter/releases/download',
   String            $systemd_service_file        = '/etc/systemd/system/node_exporter.service',
   String            $systemd_service_name        = 'node_exporter',
   String            $target_folder_location      = '/opt',
@@ -78,7 +78,7 @@ class prometheus_node_exporter (
   String            $version                     = '1.8.1',
   String            $web_configuration_folder    = '/etc/prometheus_node_exporter',
   String            $web_configuration_file      = 'configuration.yml',
-  String            $web_listen_address          = undef,
+  String            $web_listen_address          = ':9100',
 ) {
   ##
   ## Classification check for valid OS, setup variables & SE Linux contexts
