@@ -210,6 +210,13 @@ class prometheus_node_exporter (
       mode    => '0750',
   })
   # Manage the web configuration file
+  if $tls_use_puppet_certificates {
+    $tls_cert    = "${facts['puppet_sslpaths']['certdir']}/${facts['clientcert']}.pem"
+    $tls_privkey = "${facts['puppet_sslpaths']['privatekeydir']}/${facts['clientcert']}.pem"
+  } else {
+    $tls_cert    = $tls_certificate_file
+    $tls_privkey = $tls_private_key_file
+  }
   ensure_resource('file',$configuration, $selinux_config_file_params + {
       owner   => $service_username,
       group   => $service_group,
@@ -219,8 +226,8 @@ class prometheus_node_exporter (
           basic_auth_password_hashed => $basic_auth_password_hashed,
           basic_auth_username        => $basic_auth_username,
           tls_enabled                => $tls_enabled,
-          tls_certificate_file       => $tls_certificate_file,
-          tls_private_key_file       => $tls_private_key_file,
+          tls_certificate_file       => $tls_cert,
+          tls_private_key_file       => $tls_privkey,
       }),
       require => File[$web_configuration_folder],
   })
