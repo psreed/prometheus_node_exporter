@@ -139,7 +139,7 @@ class prometheus_node_exporter (
         ensure => file,
         owner => $service_username,
         group => $service_group,
-        mode => '0640',
+        mode => '0750',
         require => Archive["${target_folder_location}/${basename}.tar.gz"],
         before  => File[$binary_symlink],
     })
