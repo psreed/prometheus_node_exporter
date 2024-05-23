@@ -5,6 +5,8 @@
 #
 # @param basic_auth_enabled
 #   Determines if basic web authentication is used
+# @param basic_auth_hash_salt
+#   Sets the hash salt for basic web based authentication
 # @param basic_auth_password
 #   Sets the password for basic web based authentication
 # @param basic_auth_username
@@ -56,6 +58,7 @@
 #
 class prometheus_node_exporter (
   Boolean           $basic_auth_enabled          = true,
+  Sensitive[String] $basic_auth_hash_salt        = Sensitive('<hash_salt>'),
   Sensitive[String] $basic_auth_password         = Sensitive('<password>'),
   String            $basic_auth_username         = 'prometheus',
   String            $binary_symlink              = '/usr/local/bin/node_exporter',
@@ -96,7 +99,7 @@ class prometheus_node_exporter (
   }
   $basename = "node_exporter-${version}.${downcase($facts['kernel'])}-${architecture}"
   $configuration = "${web_configuration_folder}/${web_configuration_file}"
-  $basic_auth_password_hashed = prometheus_node_exporter::password_hash($basic_auth_password.unwrap())
+  $basic_auth_password_hashed = Sensitive(pw_hash($basic_auth_password, 'bcrypt-a', $basic_auth_hash_salt))
 
   # Define SE Linux contexts (if managed)
   if $manage_selinux_requirements {
