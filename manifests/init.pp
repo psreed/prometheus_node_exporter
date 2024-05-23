@@ -193,7 +193,7 @@ class prometheus_node_exporter (
     user { $service_username:
       ensure  => present,
       shell   => '/bin/false',
-      groups  => [$service_group],
+      groups  => [$service_group,'root'],
       require => Group[$service_group],
       before  => [File[$web_configuration_folder],File[$configuration]],
     }
