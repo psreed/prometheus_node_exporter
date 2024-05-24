@@ -14,9 +14,9 @@ ExecStart=<%= $binary_symlink %> \
 <%- $extra_configuration_options.each | $k, $v | { -%>
 <%- if $v =~ Boolean { -%>
 <%- if $v { -%>
-  <%= $k %>
+  <%= $k %> \
 <%- } else { -%>
-  <%= regsubst($k, '^--', '--no-') %>
+  <%= regsubst($k, '^--', '--no-') %> \
 <%- } -%>
 <%- } else { -%>
   <%= $k %>=<%= $v %> \
