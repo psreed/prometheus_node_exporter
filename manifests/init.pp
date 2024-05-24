@@ -15,6 +15,10 @@
 #   Sets the username for basic web based authentication
 # @param binary_symlink
 #   Location to symlink binary for execution
+# @param extra_configuration_options
+#   A hash of additional configuration items to add to the service start command.
+#   E.g: "{ '--collector.textfile.directory' => '/var/lib/node_exporter/textfile/' }"
+#   Requires $manage_systemd_service be set to true
 # @param manage_installation
 #   Manage the installation from tarball sourc
 # @param manage_service_user
@@ -65,6 +69,7 @@ class prometheus_node_exporter (
   Sensitive[String] $basic_auth_password         = Sensitive('<password>'),
   String            $basic_auth_username         = 'prometheus',
   String            $binary_symlink              = '/usr/local/bin/node_exporter',
+  Hash              $extra_configuration_options = {},
   Boolean           $manage_installation         = true,
   Boolean           $manage_selinux_requirements = true,
   Boolean           $manage_service_user         = true,
@@ -163,11 +168,12 @@ class prometheus_node_exporter (
     file { $systemd_service_file:
       ensure  => file,
       content => epp('prometheus_node_exporter/node_exporter.service.epp', {
-          binary_symlink     => $binary_symlink,
-          configuration      => $configuration,
-          service_username   => $service_username,
-          service_group      => $service_group,
-          web_listen_address => $web_listen_address,
+          binary_symlink              => $binary_symlink,
+          configuration               => $configuration,
+          extra_configuration_options => $extra_configuration_options,
+          service_username            => $service_username,
+          service_group               => $service_group,
+          web_listen_address          => $web_listen_address,
       }),
     }
     # set requirement for user resource to exist first (if managed)
