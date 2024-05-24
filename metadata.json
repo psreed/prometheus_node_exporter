@@ -1,6 +1,6 @@
 {
   "name": "psreed-prometheus_node_exporter",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "Paul Reed",
   "summary": "Puppet module to install and configure Prometheus Node Exporter",
   "license": "Apache-2.0",
