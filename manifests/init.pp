@@ -1,7 +1,12 @@
-# @summary Puppet module to install and configure Prometheus Node Exporter
+# @summary 
+#  Puppet module to install and configure Prometheus Node Exporter
 #
 # @example
 #   include prometheus_node_exporter
+# @example
+#   class { 'prometheus_node_exporter':
+#     basic_auth_enabled => true,
+#   }
 #
 # @param basic_auth_enabled
 #   Determines if basic web authentication is used
@@ -16,9 +21,11 @@
 # @param binary_symlink
 #   Location to symlink binary for execution
 # @param extra_configuration_options
-#   A hash of additional configuration items to add to the service start command.
-#   E.g: "{ '--collector.textfile.directory' => '/var/lib/node_exporter/textfile/' }"
-#   Requires $manage_systemd_service be set to true
+#   A hash of additional configuration items to add to the service start command.  
+#   Example:  
+#   {  
+#     '--collector.textfile.directory' => '/var/lib/node_exporter/textfile/'  
+#   }  
 # @param manage_installation
 #   Manage the installation from tarball sourc
 # @param manage_service_user

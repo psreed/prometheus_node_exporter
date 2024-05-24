@@ -12,7 +12,15 @@ ExecStart=<%= $binary_symlink %> \
 <%- } -%>
 <%- if $extra_configuration_options != {} { -%>
 <%- $extra_configuration_options.each | $k, $v | { -%>
+<%- if $v =~ Boolean { -%>
+<%- if $v { -%>
+  <%= $k %>
+<%- } else { -%>
+  <%= regsubst($k, '^--', '--no-') %>
+<%- } -%>
+<%- } else { -%>
   <%= $k %>=<%= $v %> \
+<%- } -%>
 <%- } -%>
 <%- } -%>
   --web.config.file=<%= $configuration %>
