@@ -71,8 +71,8 @@
 #
 class prometheus_node_exporter (
   Boolean           $basic_auth_enabled          = true,
-  Sensitive[String] $basic_auth_hash_salt        = Sensitive('0123456789AbCdEfGhIjKl'),
-  String            $basic_auth_hash_strength    = '10',
+  # Sensitive[String] $basic_auth_hash_salt        = Sensitive('0123456789AbCdEfGhIjKl'),
+  # String            $basic_auth_hash_strength    = '10',
   Sensitive[String] $basic_auth_password         = Sensitive('<password>'),
   String            $basic_auth_username         = 'prometheus',
   String            $binary_symlink              = '/usr/local/bin/node_exporter',
@@ -114,7 +114,8 @@ class prometheus_node_exporter (
   }
   $basename = "node_exporter-${version}.${downcase($facts['kernel'])}-${architecture}"
   $configuration = "${web_configuration_folder}/${web_configuration_file}"
-  $basic_auth_password_hashed = Sensitive(pw_hash($basic_auth_password, 'bcrypt-a', "${basic_auth_hash_strength}$${basic_auth_hash_salt.unwrap()}")) #lint:ignore:140chars
+  #$basic_auth_password_hashed = Sensitive(pw_hash($basic_auth_password, 'bcrypt-a', "${basic_auth_hash_strength}$${basic_auth_hash_salt.unwrap()}")) #lint:ignore:140chars
+  $basic_auth_password_hashed=$basic_auth_password
 
   # Define SE Linux contexts (if managed)
   if $manage_selinux_requirements {
