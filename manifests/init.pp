@@ -142,22 +142,22 @@ class prometheus_node_exporter (
 
     # Set binary file owner, permissions and selinux context (if applicable)
     ensure_resource('file',"${target_folder_location}/${basename}/node_exporter", $selinux_binary_file_params + {
-        ensure => file,
-        owner => $service_username,
-        group => $service_group,
-        mode => '0750',
-        require => Archive["${target_folder_location}/${basename}.tar.gz"],
-        before  => File[$binary_symlink],
+      ensure => file,
+      owner => $service_username,
+      group => $service_group,
+      mode => '0750',
+      require => Archive["${target_folder_location}/${basename}.tar.gz"],
+      before  => File[$binary_symlink],
     })
 
     # Create symlink in /usr/local/bin
     ensure_resource('file',$binary_symlink, $selinux_binary_file_params + {
-        ensure => link,
-        owner => $service_username,
-        group => $service_group,
-        mode => '0640',
-        target  => "${target_folder_location}/${basename}/node_exporter",
-        require => Archive["${target_folder_location}/${basename}.tar.gz"],
+      ensure => link,
+      owner => $service_username,
+      group => $service_group,
+      mode => '0640',
+      target  => "${target_folder_location}/${basename}/node_exporter",
+      require => Archive["${target_folder_location}/${basename}.tar.gz"],
     })
   }
 
@@ -169,12 +169,12 @@ class prometheus_node_exporter (
     file { $systemd_service_file:
       ensure  => file,
       content => epp('prometheus_node_exporter/node_exporter.service.epp', {
-          binary_symlink              => $binary_symlink,
-          configuration               => $configuration,
-          extra_configuration_options => $extra_configuration_options,
-          service_username            => $service_username,
-          service_group               => $service_group,
-          web_listen_address          => $web_listen_address,
+        binary_symlink              => $binary_symlink,
+        configuration               => $configuration,
+        extra_configuration_options => $extra_configuration_options,
+        service_username            => $service_username,
+        service_group               => $service_group,
+        web_listen_address          => $web_listen_address,
       }),
     }
     # set requirement for user resource to exist first (if managed)
@@ -185,10 +185,10 @@ class prometheus_node_exporter (
     }
     # Manage the service
     ensure_resource('service', $systemd_service_name, $service_user_params + {
-        ensure    => $service_ensure,
-        enable    => $service_enabled,
-        require   => File[$systemd_service_file],
-        subscribe => [File[$configuration], File[$systemd_service_file]],
+      ensure    => $service_ensure,
+      enable    => $service_enabled,
+      require   => File[$systemd_service_file],
+      subscribe => [File[$configuration], File[$systemd_service_file]],
     })
   }
 
@@ -212,10 +212,10 @@ class prometheus_node_exporter (
   ##
   # Manage the web configuration folder
   ensure_resource('file',$web_configuration_folder, $selinux_config_file_params + {
-      ensure => directory,
-      owner  => $service_username,
-      group  => $service_group,
-      mode    => '0750',
+    ensure => directory,
+    owner  => $service_username,
+    group  => $service_group,
+    mode    => '0750',
   })
   # Manage the web configuration file
   if $tls_use_puppet_certificates {
@@ -226,17 +226,17 @@ class prometheus_node_exporter (
     $tls_privkey = $tls_private_key_file
   }
   ensure_resource('file',$configuration, $selinux_config_file_params + {
-      owner   => $service_username,
-      group   => $service_group,
-      mode    => '0640',
-      content => epp('prometheus_node_exporter/configuration.yml.epp', {
-          basic_auth_enabled         => $basic_auth_enabled,
-          basic_auth_password_hashed => $basic_auth_password_hashed,
-          basic_auth_username        => $basic_auth_username,
-          tls_enabled                => $tls_enabled,
-          tls_certificate_file       => $tls_cert,
-          tls_private_key_file       => $tls_privkey,
-      }),
-      require => File[$web_configuration_folder],
+    owner   => $service_username,
+    group   => $service_group,
+    mode    => '0640',
+    content => epp('prometheus_node_exporter/configuration.yml.epp', {
+      basic_auth_enabled         => $basic_auth_enabled,
+      basic_auth_password_hashed => $basic_auth_password_hashed,
+      basic_auth_username        => $basic_auth_username,
+      tls_enabled                => $tls_enabled,
+      tls_certificate_file       => $tls_cert,
+      tls_private_key_file       => $tls_privkey,
+    }),
+    require => File[$web_configuration_folder],
   })
 }
